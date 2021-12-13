@@ -42,20 +42,25 @@ main:
     ret
 
 popcount:
-    li		t2, 0
-    mv 		t3, a0
-
-popcount_conti:
-    beq 	t3, x0, popcount_end
-
-    # apply a &= (a - 1)
-    addi	t4, t3, -1
-    and 	t3, t3, t4
-    addi	t2, t2, 1
-    j		popcount_conti
-
-popcount_end:
-    mv 		a0, t2
+    srli	t0, a0, 1
+    li		t1, 0x55555555
+    and		t0, t0, t1
+    sub		a0, a0, t0
+    li		t1, 0x33333333
+    srli	t2, a0, 2
+    and		t2, t2, t1
+    and		a0, a0, t1
+    add		a0, a0, t2
+    srli	t0, a0, 4
+    add		a0, a0, t0
+    li		t0, 0x0f0f0f0f
+    and		a0, a0, t0
+    li		t0, 0x01010101
+    mul		t1, a0, t0
+    mulh	t2, a0, t0
+    srli	t1, t1, 24
+    slli	t2, t2, 8
+    or		a0, t1, t2
     ret
 
 count_bits:
