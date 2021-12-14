@@ -56,11 +56,8 @@ popcount:
     li		t0, 0x0f0f0f0f
     and		a0, a0, t0
     li		t0, 0x01010101
-    mul		t1, a0, t0
-    mulh	t2, a0, t0
-    srli	t1, t1, 24
-    slli	t2, t2, 8
-    or		a0, t1, t2
+    mul		a0, a0, t0
+    srli	a0, a0, 24
     ret
 
 count_bits:
