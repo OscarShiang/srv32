@@ -66,19 +66,26 @@ count_bits:
 
     # base address of the array
     mv 		s0, a1
-    # n
-    mv 		s1, a0
-    # i
-    li 		s3, 0
 
-loop:
-    mv 		a0, s3
+    li 		a0, 0
     call	popcount
     sw 		a0, 0(s0)
 
-    addi	s3, s3, 1
-    addi	s0, s0, 4
-    bgt 	s1, s3, loop
+    li 		a0, 1
+    call	popcount
+    sw 		a0, 4(s0)
+
+    li 		a0, 2
+    call	popcount
+    sw 		a0, 8(s0)
+
+    li 		a0, 3
+    call	popcount
+    sw 		a0, 12(s0)
+
+    li 		a0, 4
+    call	popcount
+    sw 		a0, 16(s0)
 
     lw 		ra, 0(sp)
     addi 	sp, sp, 4
@@ -103,23 +110,42 @@ print:
     lw 		a1, 0(s0)
     call	printf
 
-    addi s0, s0, 4
-    ble 	s1, s0, print_end
-
-print_conti:
     # print comma
     la 		a0, comma
     call	printf
 
     # print number
     la 		a0, iformat
-    lw 		a1, 0(s0)
+    lw 		a1, 4(s0)
     call 	printf
 
-    addi 	s0, s0, 4
-    bgt 	s1, s0, print_conti
+    # print comma
+    la 		a0, comma
+    call	printf
 
-print_end:
+    # print number
+    la 		a0, iformat
+    lw 		a1, 8(s0)
+    call 	printf
+
+    # print comma
+    la 		a0, comma
+    call	printf
+
+    # print number
+    la 		a0, iformat
+    lw 		a1, 12(s0)
+    call 	printf
+
+    # print comma
+    la 		a0, comma
+    call	printf
+
+    # print number
+    la 		a0, iformat
+    lw 		a1, 16(s0)
+    call 	printf
+
     # print right bracket and line break
     la 		a0, rbracket
     call 	printf
